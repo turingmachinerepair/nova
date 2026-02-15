@@ -124,13 +124,13 @@ get_index_file([File|Tl], IndexFiles) ->
 
 
 get_filepath({file, LocalFile}) ->
-    LocalFile;
+    cow_qs:urldecode(LocalFile);
 get_filepath({priv_file, App, PrivFile}) ->
-    filename:join(code:priv_dir(App), PrivFile);
+    filename:join(code:priv_dir(App), cow_qs:urldecode(PrivFile));
 get_filepath({dir, LocalPath}) ->
-    LocalPath;
+    cow_qs:urldecode(LocalPath);
 get_filepath({priv_dir, App, LocalPath}) ->
-    filename:join(code:priv_dir(App), LocalPath).
+    filename:join(code:priv_dir(App),  cow_qs:urldecode(LocalPath)).
 
 
 file_info(Filepath, Filename) ->
