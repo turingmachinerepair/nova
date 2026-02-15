@@ -290,9 +290,10 @@ parse_url(Host, [{StatusCode, Callback, Options}|Tl], T, Value, Tree) when is_in
 parse_url(Host, [{RemotePath, LocalPath}|Tl], T, Value = #nova_handler_value{}, Tree) when is_list(RemotePath),
                                                                                            is_list(LocalPath) ->
     parse_url(Host, [{RemotePath, LocalPath, #{}}|Tl], T, Value, Tree);
-parse_url(Host, [{RemotePath, LocalPath, Options}|Tl], T = #{prefix := Prefix},
-          Value = #nova_handler_value{app = App, secure = Secure}, Tree) when is_list(RemotePath), is_list(LocalPath) ->
+parse_url(Host, [{RemotePath, LocalPath0, Options}|Tl], T = #{prefix := Prefix},
+          Value = #nova_handler_value{app = App, secure = Secure}, Tree) when is_list(RemotePath), is_list(LocalPath0) ->
     %% Static assets - check that the path exists
+    LocalPath = cow_qs:urldecode(LocalPath0),
     PrivPath = filename:join(code:priv_dir(App), LocalPath),
 
     Payload =
